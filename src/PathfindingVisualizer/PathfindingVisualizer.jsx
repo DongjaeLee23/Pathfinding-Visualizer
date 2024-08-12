@@ -15,24 +15,27 @@ export default class PathfindingVisualizer extends Component {
     }
     // This code initializes a 20x50 grid structure in the component’s state after it is mounted.
     componentDidMount() {
-        const grid = getInitialGrid()
-        this.setState({grid})
+        const nodes = getInitialGrid()
+        this.setState({nodes})
     }
 
     render() {
         const {nodes} = this.state;
         
         return (
+            <>
+            <button>Visualize Dijkstra's Algorithm</button>
             <div className="grid">
                 {nodes.map((row, rowIndex) => {
                     return (<div key={rowIndex}>
                         {row.map((node, nodeIndex) => {
-                            const {isStart, isFinish} = node;
+                            const {row, col, isStart, isFinish, isWall} = node;
                             return (
                                 <Node
                                 key={nodeIndex}
                                 isStart={isStart}
                                 isFinish={isFinish}
+                                isWall = {isWall}
                                 >
                                 </Node>
                             );
@@ -41,11 +44,12 @@ export default class PathfindingVisualizer extends Component {
                     );
                 })}
             </div>
+            </>
         );
     }
 }
 
-const createNode = (column, row) => {
+const createNode = (row, column) => {
     return {
         column,
         row,
@@ -67,6 +71,5 @@ const getInitialGrid = () => {
         }
         nodes.push(currentRow)
     }
-    this.setState({nodes})
     return nodes
 }
