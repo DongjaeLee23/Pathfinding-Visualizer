@@ -11,3 +11,12 @@
 .node-end {
     background-color: red;
 }
+
+.node-visited {
+    background-color: cornflowerblue;
+}
+
+.node-wall {
+    background-color: rgb(12, 53, 71);
+}
+
