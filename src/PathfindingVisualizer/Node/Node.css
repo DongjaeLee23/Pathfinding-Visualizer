@@ -1,7 +1,7 @@
 .node {
-    width: 20px;
-    height: 20px;
-    outline: 1px solid grey;
+    width: 25px;
+    height: 25px;
+    outline: 1.5px solid rgb(172, 172, 172);
     display: inline-block
 }
 .node-start {
@@ -18,5 +18,9 @@
 
 .node-wall {
     background-color: rgb(12, 53, 71);
+}
+
+.node-shortest-path {
+    background-color: goldenrod;
 }
 

@@ -18,6 +18,9 @@ export function dijkstra(grid, start, target) {
         if (closestNode.isWall) {
             continue;
         }
+        if (closestNode.distance == Infinity) {
+            return visistedNodesInOrder
+        }
         closestNode.isVisited = true;
         visistedNodesInOrder.push(closestNode)
         if (closestNode === target) {
@@ -34,6 +37,7 @@ export function getNodesInShortestPathOrder(finishNode) {
         nodesInShortestPathOrder.unshift(currentNode);
         currentNode = currentNode.previousNode;
     }
+    return nodesInShortestPathOrder;
 }
 function getNodes(grid) {
     const nodes = [];

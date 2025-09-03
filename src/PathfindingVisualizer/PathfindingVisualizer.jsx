@@ -31,7 +31,13 @@ export default class PathfindingVisualizer extends Component {
     }
 
     animateDijkstra(visitedNodesInOrder, nodesInShortesPathOrder) {
-        for (let i = 0; i < visitedNodesInOrder.length; i++) {
+        for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+            if (i === visitedNodesInOrder.length) {
+                setTimeout(() => {
+                    this.animateShortestPath(nodesInShortesPathOrder)
+                }, 10 * i);
+                return;
+            }
             setTimeout(() => {
                 const node = visitedNodesInOrder[i]
                 if (!node.isStart && !node.isFinish) { // Skip coloring for start and finish nodes
@@ -41,11 +47,28 @@ export default class PathfindingVisualizer extends Component {
             }, 10 * i);
         }
     }
+    animateShortestPath(nodesInShortesPathOrder) {
+        for (let i = 0; i < nodesInShortesPathOrder.length; i++) {
+            setTimeout(() => {
+                const node = nodesInShortesPathOrder[i]
+                if (!node.isStart && !node.isFinish) { // Skip coloring for start and finish nodes
+                    document.getElementById(`node-${node.row}-${node.column}`).className = 'node node-shortest-path';
+                }
+            }, 50 * i);
+        }
+    }
     handleMouseDown(row, column) {
         const newGrid = getNewGridWithWallToggled(this.state.nodes, row, column);
-        this.setState({grid: newGrid})
+        this.setState({grid: newGrid, mouseIsPressed: true})
     }
-
+    handleMouseUp() {
+        this.setState({mouseIsPressed: false})
+    }
+    handleMouseEnter(row, col) {
+        if (!this.state.mouseIsPressed) return;
+        const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
+        this.setState({grid: newGrid});
+    }
     render() {
         const {nodes, mouseIsPressed} = this.state;
         
@@ -56,7 +79,7 @@ export default class PathfindingVisualizer extends Component {
                 {nodes.map((row, rowIndex) => {
                     return (<div key={rowIndex}>
                         {row.map((node, nodeIndex) => {
-                            const {row, column, isStart, isFinish, isWall} = node;
+                            const {column, row, isStart, isFinish, isWall} = node;
                             return (
                                 <Node
                                 key={nodeIndex}
@@ -67,6 +90,8 @@ export default class PathfindingVisualizer extends Component {
                                 isWall = {isWall}
                                 mouseIsPressed = {mouseIsPressed}
                                 onMouseDown={(row, col) => this.handleMouseDown(row, col)}
+                                onMouseUp={() => this.handleMouseUp()}
+                                onMouseEnter= {(row, col) => this.handleMouseEnter(row,col)}
                                 >
                                 </Node>
                             );
